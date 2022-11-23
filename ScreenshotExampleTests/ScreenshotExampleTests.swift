@@ -23,11 +23,11 @@ final class ScreenshotExampleTests: QuickSpec {
 
 	override func spec() {
 
-		describe("RightAlignedListTeaser") {
+		describe("Example") {
 
 			var sut: UIViewController!
 
-			context("TeaserItem applied") {
+			context("Label") {
 
 				it("should have a test") {
 
