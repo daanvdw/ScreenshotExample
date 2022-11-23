@@ -46,24 +46,6 @@ static QuickSpec *currentSpec = nil;
     return invocations;
 }
 
-/**
- This method is used as a hook for injecting test methods into the
- Objective-C runtime on individual test runs.
- 
- When `xctest` runs a test on a single method, it does not call
- `defaultTestSuite` on the test class but rather calls
- `instancesRespondToSelector:` to build its own suite.
- 
- In normal conditions, Quick uses the implicit call to `defaultTestSuite`
- to both generate examples and inject them as methods by way of
- `testInvocations`.  Under single test conditions, there's no implicit
- call to `defaultTestSuite` so we make it explicitly here.
- */
-+ (BOOL)instancesRespondToSelector:(SEL)aSelector {
-    [self defaultTestSuite];
-    return [super instancesRespondToSelector:aSelector];
-}
-
 #pragma mark - Public Interface
 
 - (void)spec { }
@@ -110,8 +92,6 @@ static QuickSpec *currentSpec = nil;
     }];
 }
 
-- (void)example_thing:(void (^)(void))completionHandler {}
-
 /**
  QuickSpec uses this method to dynamically define a new instance method for the
  given example. The instance method runs the example, catching any exceptions.
@@ -129,24 +109,22 @@ static QuickSpec *currentSpec = nil;
  @return The selector of the newly defined instance method.
  */
 + (SEL)addInstanceMethodForExample:(Example *)example classSelectorNames:(NSMutableSet<NSString*> *)selectorNames {
-    IMP implementation = imp_implementationWithBlock(^(QuickSpec *self, void (^completionHandler)(void)){
+    IMP implementation = imp_implementationWithBlock(^(QuickSpec *self){
         self.example = example;
         currentSpec = self;
-        [example runWithCompletionHandler:completionHandler];
+        [example run];
     });
 
-    const char *types = [[NSString stringWithFormat:@"%s%s%s@?<v@?>", @encode(void), @encode(id), @encode(SEL)] UTF8String];
+    const char *types = [[NSString stringWithFormat:@"%s%s%s", @encode(void), @encode(id), @encode(SEL)] UTF8String];
 
     NSString *originalName = [QCKObjCStringUtils c99ExtendedIdentifierFrom:example.name];
     NSString *selectorName = originalName;
     NSUInteger i = 2;
-
-    while ([selectorNames containsObject:[selectorName stringByAppendingFormat:@"%s", @encode(SEL)]]) {
+    
+    while ([selectorNames containsObject:selectorName]) {
         selectorName = [NSString stringWithFormat:@"%@_%tu", originalName, i++];
     }
-
-    selectorName = [NSString stringWithFormat:@"%@%s", selectorName, @encode(SEL)];
-
+    
     [selectorNames addObject:selectorName];
     
     SEL selector = NSSelectorFromString(selectorName);

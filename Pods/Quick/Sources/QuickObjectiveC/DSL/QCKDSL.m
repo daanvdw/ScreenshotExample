@@ -42,8 +42,12 @@ void qck_afterEachWithMetadata(QCKDSLExampleMetadataBlock closure) {
     [[World sharedWorld] afterEachWithMetadata:closure];
 }
 
-void qck_justBeforeEach(QCKDSLEmptyBlock closure) {
-    [[World sharedWorld] justBeforeEach:closure];
+void qck_aroundEach(QCKDSLAroundExampleBlock closure) {
+    [[World sharedWorld] aroundEach:closure];
+}
+
+void qck_aroundEachWithMetadata(QCKDSLAroundExampleMetadataBlock closure) {
+    [[World sharedWorld] aroundEachWithMetadata:closure];
 }
 
 QCKItBlock qck_it_builder(NSString *file, NSUInteger line) {

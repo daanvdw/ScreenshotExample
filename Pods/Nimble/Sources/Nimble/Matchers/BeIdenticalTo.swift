@@ -15,12 +15,14 @@ public func beIdenticalTo(_ expected: AnyObject?) -> Predicate<AnyObject> {
     }
 }
 
-public func ===<Exp: Expectation>(lhs: Exp, rhs: AnyObject?) where Exp.Value == AnyObject {
-    lhs.to(beIdenticalTo(rhs))
-}
+extension Expectation where T == AnyObject {
+    public static func === (lhs: Expectation, rhs: AnyObject?) {
+        lhs.to(beIdenticalTo(rhs))
+    }
 
-public func !==<Exp: Expectation>(lhs: Exp, rhs: AnyObject?) where Exp.Value == AnyObject {
-    lhs.toNot(beIdenticalTo(rhs))
+    public static func !== (lhs: Expectation, rhs: AnyObject?) {
+        lhs.toNot(beIdenticalTo(rhs))
+    }
 }
 
 /// A Nimble matcher that succeeds when the actual value is the same instance

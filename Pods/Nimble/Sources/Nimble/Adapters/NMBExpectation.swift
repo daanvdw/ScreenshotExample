@@ -28,7 +28,7 @@ public class NMBExpectation: NSObject {
         self._line = line
     }
 
-    private var expectValue: SyncExpectation<NSObject> {
+    private var expectValue: Expectation<NSObject> {
         return expect(file: _file, line: _line, self._actualBlock() as NSObject?)
     }
 

@@ -5,32 +5,38 @@
 //  Created by Daan van de Westelaken on 23/11/2022.
 //
 
-import XCTest
+import Quick
+import Nimble
+import Nimble_Snapshots
 @testable import ScreenshotExample
 
-final class ScreenshotExampleTests: XCTestCase {
+final class ScreenshotExampleTests: QuickSpec {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
+	private func getSnapshot(_ record: Bool = false) -> Snapshot {
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+		if record {
+			return recordSnapshot(nil, identifier: nil, usesDrawRect: false)
+		}
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
+		return snapshot(nil, identifier: nil, usesDrawRect: false)
+	}
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
+	override func spec() {
 
+		describe("RightAlignedListTeaser") {
+
+			var sut: UIViewController!
+
+			context("TeaserItem applied") {
+
+				it("should have a test") {
+
+					sut = ViewController()
+					sut.loadView()
+
+					expect(sut.snapshotObject) == self.getSnapshot()
+				}
+			}
+		}
+	}
 }

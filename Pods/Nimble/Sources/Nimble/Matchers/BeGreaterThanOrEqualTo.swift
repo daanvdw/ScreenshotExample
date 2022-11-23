@@ -9,7 +9,7 @@ public func beGreaterThanOrEqualTo<T: Comparable>(_ expectedValue: T?) -> Predic
     }
 }
 
-public func >=<Exp: Expectation, T: Comparable>(lhs: Exp, rhs: T) where Exp.Value == T {
+public func >=<T: Comparable>(lhs: Expectation<T>, rhs: T) {
     lhs.to(beGreaterThanOrEqualTo(rhs))
 }
 
@@ -27,7 +27,7 @@ public func beGreaterThanOrEqualTo<T: NMBComparable>(_ expectedValue: T?) -> Pre
     }
 }
 
-public func >=<Exp: Expectation, T: NMBComparable>(lhs: Exp, rhs: T) where Exp.Value == T {
+public func >=<T: NMBComparable>(lhs: Expectation<T>, rhs: T) {
     lhs.to(beGreaterThanOrEqualTo(rhs))
 }
 

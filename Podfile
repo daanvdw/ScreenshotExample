@@ -9,8 +9,8 @@ target 'ScreenshotExample' do
 
   target 'ScreenshotExampleTests' do
     inherit! :search_paths
-		pod 'Quick'
-		pod 'Nimble'
+		pod 'Quick', '5.0.1'
+		pod 'Nimble', '10.0.0'
 		pod 'Nimble-Snapshots'
   end
 
