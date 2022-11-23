@@ -32,11 +32,19 @@ final class ScreenshotExampleTests: QuickSpec {
 				it("should have a test") {
 
 					sut = ViewController()
-					sut.loadView()
+					sut.load()
 
 					expect(sut.snapshotObject) == self.getSnapshot()
 				}
 			}
 		}
+	}
+}
+
+extension UIViewController {
+
+	func load() {
+		_ = UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.keyWindow }.first
+		_ = view
 	}
 }
